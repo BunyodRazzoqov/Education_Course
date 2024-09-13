@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: dodgerblue;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: black;
+            color: red;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+        .main{
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Register</h1>
+    <div class="main">Your already user?  <a href="{% url 'login_page' %}"> Login </a></div><br>
+    <div>
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    </div>
+    <form method="post" id="register-form">
+        {% csrf_token %}
+        <label for="register-email">Email:</label>
+        <input type="email" id="register-email" name="email" required>
+
+        <label for="register-username">Username:</label>
+        <input type="text" id="register-username" name="username">
+
+        <label for="register-password">Password:</label>
+        <input type="password" id="register-password" name="password" required>
+
+        <label for="register-password">Confirm Password:</label>
+        <input type="password" id="register-password" name="confirm_password" required>
+
+        <button type="submit">Register</button>
+
+        <div id="register-error" class="error-message"></div>
+    </form>
+    <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100"
+                             href="{% url 'social:begin' 'google-oauth2' %}"><span class="fab fa-google-plus-g me-2"
+                                                                                   data-fa-transform="grow-8"></span>
+        google</a></div>
+
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const loginError = document.getElementById('login-error');
+        const registerError = document.getElementById('register-error');
+
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+        });
+
+        registerForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+        });
+    </script>
+</div>
+
+</body>
+</html>

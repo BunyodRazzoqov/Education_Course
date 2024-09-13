@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: dodgerblue;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #008CBA;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li style="color:red;" {% if message.tags %}
+                        class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <h1>Login </h1>
+    <div class="main"><span
+            class="mb-0 fw-semi-bold">New User?</span> <span><a
+            href="{% url 'register_page' %}">Create account</a></span></div><br>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="login-email">Email:</label>
+        <input type="email" id="login-email" name="email" required>
+
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" name="password" required>
+
+        <button type="submit">Login</button>
+
+        <div id="login-error" class="error-message"></div>
+    </form>
+        <div class="col-sm-6"><a class="fa-google-plus"
+                                 href="{% url 'social:begin' 'google-oauth2' %}"><span class="fab fa-google-plus-g me-2"
+                                                                                       data-fa-transform="grow-8"></span>google</a>
+        </div>
+</div>
+
+</body>
+</html>

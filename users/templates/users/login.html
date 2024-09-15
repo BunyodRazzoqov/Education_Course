@@ -15,10 +15,11 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            background-image: url("{% static 'course/img/77bc42b49a59fed820d1f0babd5d6d38.jpg' %}");
         }
 
         .container {
-            background-color: dodgerblue;
+            background-color: limegreen;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -27,7 +28,7 @@
         }
 
         h1 {
-            color: #333;
+            color: white;
             margin-bottom: 20px;
         }
 
@@ -64,6 +65,7 @@
             color: red;
             margin-top: 10px;
         }
+
     </style>
 </head>
 <body>
@@ -82,7 +84,8 @@
     <h1>Login </h1>
     <div class="main"><span
             class="mb-0 fw-semi-bold">New User?</span> <span><a
-            href="{% url 'register_page' %}">Create account</a></span></div><br>
+            href="{% url 'register_page' %}">Create account</a></span></div>
+    <br>
 
     <form method="post">
         {% csrf_token %}
@@ -96,10 +99,9 @@
 
         <div id="login-error" class="error-message"></div>
     </form>
-        <div class="col-sm-6"><a class="fa-google-plus"
-                                 href="{% url 'social:begin' 'google-oauth2' %}"><span class="fab fa-google-plus-g me-2"
-                                                                                       data-fa-transform="grow-8"></span>google</a>
-        </div>
+    <div class="col-sm-6"><a class="fa-google-plus"
+                             href="{% url 'social:begin' 'google-oauth2' %}"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span>GOOGLE</a>
+    </div>
 </div>
 
 </body>

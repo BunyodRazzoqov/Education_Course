@@ -65,9 +65,10 @@
                     <div class="col-lg-3 col-md-6 mb-4">
                         <div class="cat-item position-relative overflow-hidden rounded mb-2">
                             <img class="img-fluid" src="{{ category.image.url }}" alt="">
-                            <a class="cat-overlay text-white text-decoration-none" href="">
+                            <a class="cat-overlay text-white text-decoration-none"
+                               href="{% url 'course' category.id %}">
                                 <h4 class="text-white font-weight-medium">{{ category.title }}</h4>
-                                <span>100 Courses</span>
+                                <span>{{ category.categories.count }} Courses</span>
                             </a>
                         </div>
                     </div>
@@ -136,7 +137,7 @@
     </div>
     <!-- Registration End -->
 
-    <!-- Team Start  Teachers-->
+    <!-- Team Start -->
     <div class="container-fluid py-5">
         <div class="container pt-5 pb-3">
             <div class="text-center mb-5">
@@ -145,27 +146,31 @@
             </div>
             <div class="row">
                 {% for teacher in teachers %}
-
                     <div class="col-md-6 col-lg-3 text-center team mb-4">
                         <div class="team-item rounded overflow-hidden mb-2">
                             <div class="team-img position-relative">
                                 <img class="img-fluid" src="{{ teacher.image.url }}" alt="">
                                 <div class="team-social">
-                                    <a class="btn btn-outline-light btn-square mx-1" href="#"><i
-                                            class="fab fa-twitter"></i></a>
-                                    <a class="btn btn-outline-light btn-square mx-1" href="#"><i
-                                            class="fab fa-facebook-f"></i></a>
-                                    <a class="btn btn-outline-light btn-square mx-1" href="#"><i
-                                            class="fab fa-linkedin-in"></i></a>
+                                    {% if teacher.telegram_url %}
+                                        <a class="btn btn-outline-light btn-square mx-1"
+                                           href="{{ teacher.telegram_url }}"><i
+                                                class="fab fa-telegram"></i></a>
+                                    {% endif %}
+                                    {% if teacher.instagram_url %}
+                                        <a class="btn btn-outline-light btn-square mx-1"
+                                           href="{{ teacher.instagram_url }}"><i
+                                                class="fab fa-instagram"></i></a>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="bg-secondary p-4">
-                                <h5> {{ teacher.full_name }}</h5>
-                                <p class="m-0">Web Designer</p>
+                                <h5>{{ teacher.full_name }}</h5>
+                                {% for course in teacher.courses.all %}
+                                    <p class="m-0">{{ course.name }}</p>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
-
                 {% endfor %}
             </div>
         </div>

@@ -31,17 +31,23 @@
                             <div class="team-img position-relative">
                                 <img class="img-fluid" src="{{ teacher.image.url }}" alt="">
                                 <div class="team-social">
-                                    <a class="btn btn-outline-light btn-square mx-1" href="#"><i
-                                            class="fab fa-twitter"></i></a>
-                                    <a class="btn btn-outline-light btn-square mx-1" href="#"><i
-                                            class="fab fa-facebook-f"></i></a>
-                                    <a class="btn btn-outline-light btn-square mx-1" href="#"><i
-                                            class="fab fa-linkedin-in"></i></a>
+                                    {% if teacher.telegram_url %}
+                                        <a class="btn btn-outline-light btn-square mx-1"
+                                           href="{{ teacher.telegram_url }}"><i
+                                                class="fab fa-telegram"></i></a>
+                                    {% endif %}
+                                    {% if teacher.instagram_url %}
+                                        <a class="btn btn-outline-light btn-square mx-1"
+                                           href="{{ teacher.instagram_url }}"><i
+                                                class="fab fa-instagram"></i></a>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="bg-secondary p-4">
                                 <h5>{{ teacher.full_name }}</h5>
-                                <p class="m-0">Web Designer</p>
+                                {% for course in teacher.courses.all %}
+                                    <p class="m-0">{{ course.name }}</p>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

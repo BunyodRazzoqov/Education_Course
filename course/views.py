@@ -1,9 +1,19 @@
+import os
+
+from django.db.models import Avg, Sum, Count
+
+from config.settings import BASE_DIR
 from django.views.generic import View
 from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import DetailView, ListView
 
-from django.shortcuts import render
-
-from course.models import Course, Category, Teacher
+from django.shortcuts import render, get_object_or_404, redirect
+from typing import Optional
+from course.models import Course, Category, Teacher, Video, Comment
+from moviepy.video.io.VideoFileClip import VideoFileClip
+import moviepy.editor
+from course.forms import CommentForm
 
 
 # Create your views here.
@@ -31,23 +41,72 @@ class CategoryListView(View):
 
 
 class TeacherListView(ListView):
-    model = Teacher
-    context_object_name = 'teachers'
-    template_name = 'course/teacher.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(TeacherListView, self).get_context_data(**kwargs)
-        teachers = self.get_queryset()
-        context['teachers'] = teachers
-
-        return context
+    def get(self, request, *args, **kwargs):
+        categories = Category.objects.all()
+        teachers = Teacher.objects.all()
+        context = {'categories': categories, 'teachers': teachers}
+        return render(request, 'course/teacher.html', context)
 
 
 class CourseListview(View):
     template_name = 'course/course.html'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, id: Optional[int] = None):
         categories = Category.objects.all()
-        courses = Course.objects.all()
-        context = {'categories': categories, 'courses': courses}
+        if id == 0 or id is None:
+            courses = None
+        else:
+            courses = Course.objects.filter(category__id=id)
+        popular_courses = Course.objects.filter(price__gte=0).order_by('-price')[:10]
+        if courses:
+            for course in courses:
+                course.average_rating = Comment.objects.filter(video_id__course_id=course).aggregate(Avg('rating'))[
+                    'rating__avg']
+
+        context = {'categories': categories, 'courses': courses, 'popular_courses': popular_courses}
         return render(request, self.template_name, context)
+
+
+class VideoListView(LoginRequiredMixin, View):
+    def get(self, request, id):
+        videos = Video.objects.filter(course__id=id)
+        categories = Category.objects.all()
+        for video in videos:
+            video.average_rating = Comment.objects.filter(video_id=video).aggregate(Avg('rating'))['rating__avg']
+        context = {'videos': videos, 'categories': categories}
+        return render(request, 'course/videos.html', context)
+
+
+def about(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'course/about.html', context)
+
+
+def contact(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'course/contact.html', context)
+
+
+class VideoDetailView(DetailView):
+    model = Video
+    context_object_name = 'video'
+    template_name = 'course/video_detail.html'
+
+    def post(self, request, *args, **kwargs):
+        video = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.video = video
+            comment.user = request.user
+            comment.save()
+            return redirect('home')
+        return self.get(request, *args, **kwargs)
+
+
+# print(video.file.url)
+# filename = os.path.join(BASE_DIR, video.file.url)
+# video1 = moviepy.editor.VideoFileClip(filename=filename)
+# video.duration = video1.duration

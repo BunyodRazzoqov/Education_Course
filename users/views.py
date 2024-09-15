@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LoginView, LogoutView
 from django.core.mail import send_mail
 from django.http import HttpResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.views.generic import FormView
 from django.urls import reverse_lazy
 from users.authentication_form import AuthenticationForm
@@ -69,6 +69,12 @@ class SendEmailView(FormView):
     def form_valid(self, form):
         form.send_email()
         return super().form_valid(form)
+
+
+def logout_page(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('home')
 
 
 def success(request):

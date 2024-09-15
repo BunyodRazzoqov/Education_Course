@@ -1,0 +1,130 @@
+{% extends 'course/base/base.html' %}
+{% load static %}
+{% block blog_detail %}
+
+    <!-- Header Start -->
+    <div class="container-fluid page-header" style="margin-bottom: 90px;">
+        <div class="container">
+            <div class="d-flex flex-column justify-content-center" style="min-height: 300px">
+                <h3 class="display-4 text-white text-uppercase">Video</h3>
+                <div class="d-inline-flex text-white">
+                    <p class="m-0 text-uppercase"><a class="text-white" href="{% url 'home' %}">Home</a></p>
+                    <i class="fa fa-angle-double-right pt-1 px-3"></i>
+                    <p class="m-0 text-uppercase">Video Detail</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+
+    <!-- Detail Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="mb-5">
+                        <h1 class="mb-5">{{ video.title }}</h1>
+                        <video class="img-fluid rounded w-50 mb-4" controls>
+                            <source src="{{ video.file.url }}" type="video/mp4">
+                        </video>
+
+                    </div>
+
+
+                    <!-- Comment List -->
+                    <div class="mb-5">
+
+                        <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">{{ video.comments.count }}
+                            Comments</h3>
+                        {% for comment in video.comments.all %}
+                            <div class="media mb-4">
+                                {% if comment.user.image %}
+                                    <img src="{{ comment.user.image.url }}" alt="Image"
+                                         class="img-fluid rounded-circle mr-3 mt-1"
+                                         style="width: 45px;">
+                                {% endif %}
+                                <div class="media-body">
+                                    <h6>{{ comment.user.email }} <small><i>    {{ comment.created_at }}</i></small></h6>
+                                    <p>{{ comment.text }}</p>
+                                    <button class="btn btn-sm btn-secondary">Reply</button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Comment Form -->
+                    <div class="bg-secondary rounded p-5">
+                        <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Leave a comment</h3>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <select id="rating" name="rating">
+                                    <option value="none" selected>Rating</option>
+                                    <option value="1">⭐</option>
+                                    <option value="2">⭐⭐</option>
+                                    <option value="3">⭐⭐⭐</option>
+                                    <option value="4">⭐⭐⭐⭐</option>
+                                    <option value="5">⭐⭐⭐⭐⭐</option>
+                                </select>
+                                </label>
+                                <div class="d-block"
+                                     data-rater='{"starSize":32,"step":0.5}'></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" cols="30" rows="5" name="text" class="form-control border-0"></textarea>
+                            </div>
+                            <div class="form-group mb-0">
+                                <input type="submit" value="Leave Comment"
+                                       class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mt-5 mt-lg-0">
+
+                    <!-- Search Form -->
+                    <div class="mb-5">
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-lg" placeholder="Keyword">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-transparent text-primary"><i
+                                            class="fa fa-search"></i></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Category List -->
+                    <div class="mb-5">
+                        <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Categories</h3>
+                        <ul class="list-group list-group-flush">
+                            {% for category in video.course.category.categories.all %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <a href="{% url 'course' category.id %}"
+                                       class="text-decoration-none h6 m-0">{{ category.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+
+                        <div class="mb-5">
+                        </div>
+                        <h2 class="mb-4">{{ video.course.name }} Teacher</h2>
+                        <img class="img-fluid rounded w-50 float-left mr-4 mb-3"
+                             src="{{ video.course.teachers.image.url }}" alt="Image">
+                        <h5>{{ video.course.teachers.full_name }}</h5>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail End -->
+
+{% endblock %}

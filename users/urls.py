@@ -9,4 +9,6 @@ urlpatterns = [
     path('login/', views.LoginPageView.as_view(), name='login_page'),
     path('register/', views.register_page, name='register_page'),
     path('activation-link/<uidb64>/<token>/', views.activate, name='activate'),
+    path('logout/', views.logout_page, name='logout_page'),
+
 ]

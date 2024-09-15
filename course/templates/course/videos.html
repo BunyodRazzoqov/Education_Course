@@ -1,0 +1,61 @@
+{% extends 'course/base/base.html' %}
+{% load static %}
+{% block videos %}
+
+
+    <!-- Header Start -->
+    <div class="container-fluid page-header" style="margin-bottom: 90px;">
+        <div class="container">
+            <div class="d-flex flex-column justify-content-center" style="min-height: 300px">
+                <h3 class="display-4 text-white text-uppercase">Videos</h3>
+                <div class="d-inline-flex text-white">
+                    <p class="m-0 text-uppercase"><a class="text-white" href="{% url 'home' %}">Home</a></p>
+                    <i class="fa fa-angle-double-right pt-1 px-3"></i>
+                    <p class="m-0 text-uppercase">Videos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!--  Videos Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h1 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Videos</h1>
+            </div>
+            <div class="row">
+
+                {% for video in videos %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="rounded overflow-hidden mb-2">
+                            <h5>{{ video.title }}</h5>
+                            <video class=" img-fluid" controls>
+                                <source src="{{ video.file.url }}" type="video/mp4">
+                            </video>
+                            <div class="bg-secondary p-4">
+                                {% if video.comments.count %}
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="m-0"><i
+                                                class="fa fa-star text-primary mr-2"></i>{{ video.average_rating }}
+                                            <small>({{ video.comments.count }})</small>
+                                        </h6>
+                                    </div>
+                                {% endif %}
+                                <div class="text-right">
+                                    <button class="btn btn-secondary py-1 px-2" type="submit" id="">
+                                        <a href="{% url 'video_detail' video.id %}">Video Detail</a>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+    <!--  Videos End -->
+
+
+{% endblock %}

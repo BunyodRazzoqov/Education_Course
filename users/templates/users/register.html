@@ -15,6 +15,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            background-image: url("{% static 'course/img/757372c25993248a50b681ce2b9c4e8c.jpg' %}");
         }
 
         .container {
@@ -64,7 +65,8 @@
             color: red;
             margin-top: 10px;
         }
-        .main{
+
+        .main {
             color: yellow;
         }
     </style>
@@ -73,7 +75,8 @@
 
 <div class="container">
     <h1>Register</h1>
-    <div class="main">Your already user?  <a href="{% url 'login_page' %}"> Login </a></div><br>
+    <div class="main">Your already user? <a href="{% url 'login_page' %}"> Login </a></div>
+    <br>
     <div>
         {% if form.errors %}
             {% for field in form %}
@@ -106,7 +109,7 @@
     <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100"
                              href="{% url 'social:begin' 'google-oauth2' %}"><span class="fab fa-google-plus-g me-2"
                                                                                    data-fa-transform="grow-8"></span>
-        google</a></div>
+        GOOGLE</a></div>
 
     <script>
         const loginForm = document.getElementById('login-form');

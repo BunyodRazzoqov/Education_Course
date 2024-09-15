@@ -52,8 +52,6 @@ def register_page(request):
                 [user.email],
                 fail_silently=False,
             )
-            # login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            # return redirect('customers')
             return HttpResponse('<h1>Please confirm your email address to complete the registration</h1>')
     else:
         form = RegisterModelForm()

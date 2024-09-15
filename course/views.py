@@ -83,11 +83,6 @@ def about(request):
     return render(request, 'course/about.html', context)
 
 
-def contact(request):
-    categories = Category.objects.all()
-    context = {'categories': categories}
-    return render(request, 'course/contact.html', context)
-
 
 class VideoDetailView(DetailView):
     model = Video
@@ -106,7 +101,3 @@ class VideoDetailView(DetailView):
         return self.get(request, *args, **kwargs)
 
 
-# print(video.file.url)
-# filename = os.path.join(BASE_DIR, video.file.url)
-# video1 = moviepy.editor.VideoFileClip(filename=filename)
-# video.duration = video1.duration

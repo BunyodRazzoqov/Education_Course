@@ -83,7 +83,6 @@ def about(request):
     return render(request, 'course/about.html', context)
 
 
-
 class VideoDetailView(DetailView):
     model = Video
     context_object_name = 'video'
@@ -99,5 +98,3 @@ class VideoDetailView(DetailView):
             comment.save()
             return redirect('home')
         return self.get(request, *args, **kwargs)
-
-
